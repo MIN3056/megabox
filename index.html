@@ -12,9 +12,19 @@
     <meta property="og:url" content="https://min3056.github.io/megabox/">
 <!-- github - repository - setting - pages - branch -main- root 설정한 뒤 domain 나중에 받기. -->
 
+
+
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./css/reset.css">
+    <!-- swipper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
     <script src="./js/jquery.min.js"></script>    
+    <!-- swipper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- jquary cookie 쿠키 손 쉽게 제어 가능 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
     <title>MEET PLAY SHARE, 메가박스</title>
     <style>
         @font-face {
@@ -24,59 +34,687 @@
         :root{
             font-family: 'Noto Sans KR';font-weight: 400;font-size: 15px;line-height: 1;color: #222;
         }
+        /* .skip-menu{
+             position: fixed;left: 0;right: 0;top: -63px;
+           f12 로 확인해봤을때  21, padding 21, margin 21 이니까 -63px
+            padding: 1em;
+            font-weight: 700;font-size: 1.4em;color: #fff;text-align: center; 
+        }*/
+        .skip-menu a{
+            position: fixed;left: 50%;top: 0;transform: translate(-50%,-62px);
+            border: 2px solid #fff;
+            padding: 1em 2em;
+            background: #503396;
+            color: #fff;
+        }
+        .skip-menu a:focus{
+            border-color: #fff;
+            transform: translateX(-50%,0);
+        }
+
+        .container{
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .dis-none{
+            display:none;
+        }
+        .dis-none.dis-show{
+            display:block;
+        }
+       
+        .ad{
+            background: #eff0f9;
+        }
+        .ad .img-box{
+            position: relative;
+        }
+        .ad .img-box::after{
+            content: 'AD';
+            display: block;
+            position: absolute;right: 0;bottom: 0;
+            padding: 0.2em 0.5em;
+            background: #ccc;
+            color: #fff;
+        }
+        .sec h2{
+            font-size: 2em;
+        }
+        .ad01{
+            position: relative;
+        }
+        .btn-close-ad{
+            position: absolute; right: 0; bottom: 0; 
+            padding: 5px;
+            background: #222;
+            color: #fff;
+            cursor: pointer;
+        }
+        /* 메인배너 스타일 */
+        .banner{
+            /* 가로 가운데 세로 가운데 맞춤 */
+            position: fixed;left: 50%;top: 50%;transform: translate(-50%,-50%);
+            width: 340px;
+            border-radius: 12px;
+            padding: 1em;
+            background: #fff;
+        }
+        .banner container{
+            padding: 0;
+        }
+        .banner .swiper{
+            margin-bottom: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .banner button{
+            position: absolute;right: 16px;
+        }
+
+        /* 헤더 스타일 */
+        .header{
+            position: relative;
+            padding: 1.2em 0 1.4em;
+            background: #222;
+            color: #fff;
+        }
+        .header .container{
+            display: grid; grid-template-columns: repeat(12,1fr);gap: 0.5em;
+        }
+        h1{
+            grid-area: 1/6/3/8;
+            z-index: 1;
+        }
+        h1>a{
+            display: block;
+            width: 100%;
+            height: 100%;
+            /* 가로는 center, 세로는 bottom에 맞추기 */
+            background: url(./images/logo-w.png) no-repeat center;background-size: 140px;
+            text-indent: -99999px;
+        }
+        .q-nav01{
+            grid-area: 1/1/2/6;
+            padding-left: 0.5em;
+        }
+        .q-nav02{
+            /* 행 번호 /행 번호 /열 번호/열 번호 */
+            grid-area: 1/8/2/-1;
+            padding-right: 0.5em;
+        }
+        .q-nav03{
+            grid-area: 2/1/3/2;
+        }
+        .q-nav04{
+            grid-area: 2/12/3/-1;
+        }
+        .q-nav>ul{
+            display: flex; flex-flow: row nowrap; justify-content: flex-start;
+            /* flex의 장점 column 수 지정 안해도 됨 */
+            font-size: 0.9em;color:#ccc;
+        }
+        .q-nav02>ul, .q-nav04>ul{
+            justify-content: flex-end;
+        } 
+        .q-nav>ul>li{
+            margin-right: 1em;
+        }
+        .q-nav>ul>li:last-child{
+            margin-right: 0;
+        }
+
+        .q-nav03>ul>li>a, .q-nav04>ul>li>a{
+            display: block;
+            width: 36px; height: 36px;
+            background: url(./images/ico-sitemap-white.png) no-repeat center bottom; background-size: 24px;
+            text-indent: -99999px;
+        }
+        .q-nav03>li:last-child>a{
+            background-image: url(./images/ico-search-white.png);background-size: 20px;
+        }
+        .q-nav04>li:nth-child(1)>a{
+            background-image: url(./images/ico-schedule-white.png);background-size: 36px;
+        }
+        .q-nav04>li:nth-child(2)>a{
+            background-image: url(./images/ico-mymega-white.png);background-size: 20px;
+        }
+
+        .dt-nav{
+            grid-area: 2/3/3/11;
+            display: flex;
+            justify-content: space-between;
+        }
+        .dt-nav>ul{
+            display: flex;
+            align-items: flex-end;
+        }
+        .dt-nav>li{
+            margin-right: 3em;
+        }
+        .dt-nav>ul>li:last-child{
+            margin-right: 0;
+        }
+        .dt-nav>ul>li>a{
+            font-size: 1.3em;
+        }
+        .m-nav{
+            display: none;
+        }
+        .btn-nav{
+            z-index: 1;
+            display: none;
+            width: 36px;height: 36px;
+            margin-left: auto;
+            background: transparent url(./images/ico-burger-w.png);
+            cursor: pointer;
+        }
+        
+        .header .dis-none{
+            display: block; position: absolute; left: 0;right: 0;top: 100%;
+            padding: 50px 0; background: #666;
+        }
+
+      
+        .site-map{
+            display: block;
+            color: #fff;
+        }
+        .site-map .container{
+            display: block;
+        }
+
+        .site-map>h2{
+            margin-bottom: 1em;
+            font-size: 1.6em;
+        }
+        .site-map-list{
+            display: grid;
+            grid-template-columns: repeat(6,1fr);
+            column-gap: 2em;
+            row-gap: 6em;
+        }
+        .site-map-list>li{
+            font-size: 1.4em;text-align: center;
+        }
+        .site-map-list>ul>li{
+            margin: 1em 0;
+            font-weight: 300; font-size: 0.8em;color: #ccc;
+        }
+        .header .search{
+            background: #503396;
+        }
+        .search .container{
+            display: block;
+        }
+        .search h2{
+            display: none;
+        }
+        .tab{
+            margin-bottom: 2em;
+        }
+        .tab a{
+            margin-right: 2em;
+            padding-bottom: 0.5em;
+        }
+        .tab a.active,.tab a:hover{
+            border-bottom: 1px solid #fff;
+            color: #fff;
+        }
+        .search-movie{
+            display: grid;grid-template-columns: 1fr 1fr 4fr;
+            gap: 4em; 
+            align-items: center;
+        }
+        .search-movie ol{
+            display: flex;flex-flow: column nowrap;
+            justify-content: space-evenly;
+            height: 100%;
+            font-size: 1.3em;
+            color: #fff;
+        }
+        .search-movie form{
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
+        .search-movie input[type="text"]{
+            width: 360px;
+            border: none;
+            border: 2px solid #fff;
+            padding: 0.5em;
+            background: transparent;
+            font-size: 1.4em;color: #fff;
+        }
+        .search-movie input[type="text"]::placeholder{
+            color: #fff;
+        }
+        .search-movie input[type="submit"]{
+            width: 36px; height: 36px;
+            background: transparent url(./images/ico-search-white.png) no-repeat center;
+            background-size: 20px;
+            text-indent: -99999px;
+            position: relative;left: -36px;
+            border: none;
+        }
+        .header .my-megabox{
+            display: block;
+            font-size: 1.2em;}
+        .header .my-megabox h2{
+            border-radius: 6px;
+            padding: 0.2em;
+        }
+
+        
+        @media(max-width:1099px){
+            .container{
+                padding: 0 10px;
+            }
+            .ad01, .dt-nav, .q-nav01, .q-nav02, .q-nav03{
+                display: none;
+            }
+            .header .container{
+                grid-template-columns: repeat(8,lfr);
+            }
+            h1{
+                grid-area: 1/3/2/7;
+                padding-top: 8px;
+            }
+            h1>a{
+                width: 100px;height: 20px;
+                margin: 0 auto;
+                background-position: center top;
+                background-size: cover;
+            }
+            .q-nav04{
+                grid-area: 1/1/2/-1;
+            }
+            .q-nav04>ul{
+                justify-content: space-between;
+                padding-right: 40px;
+            }
+            .q-nav04>ul>li>a,  .q-nav04>ul>li:nth-child(1)>a{
+                background-position: center;
+            }
+            .btn-nav{
+                display: block;
+                grid-area: 1/8/2/-1;
+            }
+            .login-form{
+
+            }
+            .login-form .container{
+                position: absolute; left: 50%; top: 50%;
+                transform: translate(-50%,-50%);
+                display: block;
+                background: #fff;
+            }
+            .login-head{
+                padding: 1em;
+                background: #503396;
+                color: #fff;
+            }
+            .login-head .btn-close{
+                width: 24px;height: 24px;
+                position: relative;
+            }
+            .login-head .btn-close span{
+                position: absolute;left: 0;right: 0;top: 50%;
+                transform: translateY(-50%) rotate(45deg);
+                height: 2px;
+                background: #fff;
+            }
+            .login-head .btn-close span:first-child{
+                transform: translate();
+            }
+            .login-body{
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                color: #000;
+            }
+            .login-body ul{
+                display: grid;
+                grid-template-columns: auto auto auto;
+
+            }
+
+        }
+
+        @media(max-width:767px){
+            
+           
+        }
+        
+        @media(max-width:359px){
+            
+        }
+
+
     </style>
 </head>
 <body>
+    <!-- SKIPMENU는 법률상 넣게 되어있음. -->
     <div class="skip-menu">
-        <a href="#header">본문 바로가기</a>
-        <a href="#footer">푸터 바로가기</a>
+        <a href="#header">본문 바로가기</a><a href="#footer">푸터 바로가기</a>
     </div>
     <div class="ad ad01">
         <div class="container">
             <div class="img-box">
-                <img src="./images/img-ad01.png" alt="advertisement">
+                <a href="#"><img src="./images/img-ad01.png" alt="현대해상 바로가기"></a>
             </div>
         </div>
+        <!-- entity code에서 &times; = 특수문자 x -->
+        <div class="btn-close-ad">&times;</div>
     </div>
     <section class="wrap">
         <header class="header" id="header">
             <div class="container">
-                HEADER
+                <h1><a href="./index.html">메가박스</a></h1>
+                <div class="q-nav q-nav01">
+                    <ul>
+                        <li><a href="#">VIP LOUNGE</a></li>
+                        <li><a href="#">멤버십</a></li>
+                        <li><a href="#">고객센터</a></li>
+                    </ul>
+                </div>
+                <div class="q-nav q-nav02">
+                    <ul>
+                        <li><a href="#">로그인</a></li>
+                        <li><a href="#">회원가입</a></li>
+                        <li><a href="#">빠른예매</a></li>
+                    </ul>
+                </div>
+                <div class="q-nav q-nav03">
+                    <ul>
+                        <li>
+                            <a href="#" title="site-map"  class="btn-header">사이트맵</a>
+                            <div class="dis-none site-map">
+                                <div class="dis-container">
+                                    <h2>SITEMAP</h2>
+                                    <ul class="site-map-list">
+                                        <li>
+                                            <h3>영화</h3>
+                                            <ul>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">큐레이션</a></li> 
+                                                <li><a href="#">영화제</a></li>
+                                                <li><a href="#">무비포스트</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul>
+                                                <h3>예매</h3>
+                                                <li><a href="#">빠른예매</a></li>
+                                                <li><a href="#">상영시간표</a></li> 
+                                                <li><a href="#">더 부티크 프라이빗 예매</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul>
+                                                <h3>극장</h3>
+                                                <li><a href="#">전체극장</a></li>
+                                                <li><a href="#">특별관</a></li> 
+                                            </ul>
+                                        </li>
+                                            <ul>
+                                                <h3>이벤트</h3>
+                                                <li><a href="#">진행중 이벤트</a></li>
+                                                <li><a href="#">지난 이벤트</a></li> 
+                                                <li><a href="#">당첨자발표</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul>
+                                                <h3>스토어</h3>
+                                                <li><a href="#">새로운 상품</a></li>
+                                                <li><a href="#">메가티켓</a></li> 
+                                                <li><a href="#">팝콘/음료/굿즈</a></li>
+                                                <li><a href="#">포인트몰</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>  
+                                            <ul>
+                                                <h3>혜택</h3>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li> 
+                                                <li><a href="#">전체영화</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul>
+                                                <h3>고객센터</h3>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li> 
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul>
+                                                <h3>회사소개</h3>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li> 
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul>
+                                                <h3>이용정책</h3>
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li> 
+                                                <li><a href="#">전체영화</a></li>
+                                                <li><a href="#">전체영화</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>    
+                                </div>                            
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#"  class="btn-header">검색</a>
+                            <div class="dis-none search">
+                                <div class="container">
+                                    <h2>검색</h2>
+                                    <div class="tab">
+                                        <a href="#" class="active">예매율순</a>
+                                        <a href="#">메가박스 관객순</a>
+                                    </div>
+                                        <div class="search-movie">
+                                            <div class="img-box"><img src="./images/img-poster01.jpg" alt="범죄도시 4"></div>
+                                                <ol>
+                                                    <li><a href="#">1. 범죄도시4</a></li>
+                                                    <li><a href="#">2. 듄</a></li>
+                                                    <li><a href="#">3. 레옹</a></li> 
+                                                    <li><a href="#">4. 쿵푸팬더4</a></li>
+                                                    <li><a href="#">5. 듄:파트2</a></li>
+                                                </ol>
+                                                <form action="#">
+                                                    <input type="text" name="movie-name" id="movie-name" placeholder="영화를 검색하세요">
+                                                    <input type="submit" value="검색">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                        </li>
+                    </ul>             
+                </div>
+                <div class="q-nav q-nav04">
+                    <ul>
+                        <li><a href="#" title="상영시간표">상영시간표</a></li>
+                        <li>
+                            <a href="#" title="나의 메가박스" class="btn-header">나의 메가박스</a>
+                            <div class="dis-none my-megabox">나의 메가박스 상자
+                            
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <nav class="dt-nav">
+                    <ul>
+                        <li><a href="#">영화</a></li>
+                        <li><a href="#">예매</a></li>
+                        <li><a href="#">극장</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#">이벤트</a></li>
+                        <li><a href="#">스토어</a></li>
+                        <li><a href="#">혜택</a></li>
+                    </ul>
+                </nav>
+                <nav class="m-nav">
+                    모바일 네비게이션
+                </nav>
+                <button class="btn-nav"></button>
+                <div class="login-form">
+                    <div class="container">
+                        <div class="login-head">
+                            <h2>로그인</h2>
+                            <div class="btn-close">
+                                <span></span><span></span>
+                            </div>       
+                        </div>
+                        <div class="login-body">
+                            <form action="#">
+                                <input type="text" name="uid" id="uid" placeholder="아이디">
+                                <input type="password" name="upass" id="upass" placeholder="비밀번호">
+                                <label><input type="checkbox" name="" id="">아이디 저장</label>
+                                <input type="submit" value="로그인">
+                                <ul>
+                                    <li><a href="#">ID/PW 찾기</a></li>
+                                    <li><a href="#">회원가입</a></li>
+                                    <li><a href="#">비회원 예매확인</a></li>
+                                </ul>
+                                <ul>
+                                    <li><a href="#"><img src="./images/ico-facebook.png" alt="facebook login" title="facebook login"></a></li>
+                                    <li><a href="#"><img src="./images/ico-instagram.png" alt="instagram login" title="instagram login"></a></li>
+                                    <li><a href="#"><img src="./images/ico-twitter.png" alt="twitter login" title="twitter login"></a></li>
+                                </ul>
+                            </form>
+                        </div>
+
+
+                        <!-- title을 넣어주면 마우스 가져다댔을때 txt나옴 -->
+                    </div>
+                </div>
             </div>
         </header>    
         <section class="sec sec01 boxoffice">
-            <div class="cotainer">
-                boxoffice
+            <div class="container">
+                <h2>박스오피스</h2>
             </div>
         </section>
         <section class="sec sec02 benefit">
             <div class="container">
-                benefit    
-                <div class="ad ad02"></div>
+                <h2>혜택</h2>
             </div>
         </section>
         <section class="sec sec03 curation">
-            <div class="contianer">
-                curation
+            <div class="container">
+                <h2>큐레이션</h2>
             </div>
         </section>
         <section class="sec sec04 megainfo">
             <div class="container">
-                megabox information
+                <h2>메가박스 안내</h2>
             </div>
         </section>
-        <section class="sec sec05 ad03">
+        <section class="sec sec05 ad ad03">
             <div class="container">
-
+                <h2>현대해상 광고</h2>
+                <div class="img-box">
+                    <a href="#"><img src="./images/img-ad03.png" alt="advertisement"></a>
+                </div>
             </div>
         </section>
+        <aside class="aside banner" id="main-popup">
+            <div class="container">
+               <!-- Slider main container -->
+                    <div class="swiper">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper">
+                            <!-- Slides -->
+                            <div class="swiper-slide">                   
+                                <a href="#"><img src="./images/img-popup01.jpg" alt="popup01 바로가기"></a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="#"><img src="./images/img-popup02.png" alt="popup02 바로가기"></a>
+
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="#"><img src="./images/img-popup03.jpg" alt="popup03 바로가기"></a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="#"><img src="./images/img-popup04.jpg" alt="popup04 바로가기"></a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="#"><img src="./images/img-popup05.jpg" alt="popup05 바로가기"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <label><input type="checkbox" id="chk-pop">하루동안 보지 않기</label>
+                    <button id="btn-close">닫기</button>
+            </div>
+        </aside>
         <footer class="footer" id="footer">
-            footer
+            <div class="container">
+                footer
+            </div>
         </footer>
     </section>
 
     <script>
+// jquery 쿠키 사용하기 싫으면, document.cookie="cokPop=show"; console.log(document.cookie); 쿠키를 만들어줄 수 잇음.
 
+        // objClose라는 함수는 item을 인수로 갖고 item을 감추는 함수
+        function objClose(item){
+            item.hide();
+        };
+        $('.btn-close-ad').click(function(){
+            objClose($('.ad01'));
+        });
+
+        // 문서가 시작될 때 조건을 만들어야함. 만약 쿠키가 있다면 메인팝업을 보여주지 않겠다.
+        if($.cookie('cokPop') == 'none'){
+            objClose($('#main-popup'))
+            // $('#main-popup').hide(); 매개변수 main-popup
+        };
+        // 쿠키를 삭제하여 없앤 뒤 새로고침하면 다시 팝업이 작동하게됨. 이처럼 쿠키를 남겨두고 그 정보를 이용할 수 있다.
+        $('#btn-close').click(function(){
+                    if($('#chk-pop').is(':checked')){
+                        // 체크팝이 페크되어있으면 cokPop이라는 이름의 none값을 갖는 쿠키를 만들 것이다. 나머지는 전부 개체형태로 넣어야함.도메인은 지정할 필요없음.expires: 날짜변경선 expires:1오늘 안보기
+                    $.cookie('cokPop','none',{expires:1});
+                    }
+                    objClose($('#main-popup'));
+                });
+                // $.cookie라는 method 사용하려면, jQuery cookie플러그인을 사용해야함. jQuery이후에 나와야함.
+        const swiper = new Swiper('.swiper',{
+            effect:'fade',
+            speed:800,
+            loop:true,
+            // 뭐가 처음이고 마지막인지 모르게.계속 돌아가도록
+            autoplay:{
+                delay:5000,
+            }
+        });
+        //$.cookie('popup',false);
+        // $.removeCookie('name');
+        // console.log($.cookie('popup'));
+        // 변경하는 법 => $.cookie('popup',true);
+
+        // let cokPop = $.cookie();
+        $('.btn-header').click(function(e){
+            $('.dis-none').not($(this).next()).removeClass('dis-show');
+            $(this).next().toggleClass('dis-show');
+            e.preventDefault();
+        })
+        
     </script>
 </body>
 </html>
